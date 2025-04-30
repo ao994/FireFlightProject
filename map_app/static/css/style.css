@@ -1,0 +1,102 @@
+body {
+    margin: 0;
+    padding: 0;
+
+    color:black;
+    background-image: url("/static/images/ponderosa_scene_ChimneySprings_CoconinoNF.jpg");
+    background-position:center;
+    background-repeat: no-repeat;
+    text-align: center;
+
+}
+small{
+    display: flex;
+}
+
+nav{
+    background-image:linear-gradient(gray, white);
+    font-size: large;
+} 
+h1{
+    text-align: center;
+    color:crimson;
+    background: rgba(255,255,255,0.85);
+}
+
+p{
+    position: relative;
+    text-align: center;
+    margin: 5% auto;
+    width: 700px; 
+    font-size: larger;
+    background: rgba(255,255,255,0.85);
+    border-radius: 2px;  
+    line-height: 1.8;
+}
+p.b{
+    position: relative;
+    text-align: left;
+    margin: 5% auto;
+    width: 700px; 
+    font-size: larger;
+    background: rgba(255,255,255,0.85);
+    border-radius: 5px;  
+    line-height: 1.8;
+}
+
+ul.b{
+    position: relative;
+    text-align: left;
+    margin: 5% auto;
+    width: 700px; 
+    font-size: larger;
+    background: rgba(255,255,255,0.85);
+    border-radius: 2px; 
+    line-height: 1.8;
+
+         
+}
+
+h3{
+    position: relative;
+    margin: 1% auto;
+    width: 700px; 
+    font-size: larger;
+    background: rgba(255,255,255,0.5);
+    border-radius: 2px;   
+}
+
+iframe{
+    display:flex ;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.8); /* Optional overlay */
+    z-index: 9999; /* Ensure it's on top */
+}
+
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

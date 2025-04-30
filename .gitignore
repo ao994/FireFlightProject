@@ -1,0 +1,15 @@
+.venv
+**/__pycache__/**
+**/migrations/**
+.DS_Store?
+.DS_Store
+venv/
+__pycache__/
+bird_data.csv
+**/file_uploads/**
+**/raw_demos/**
+settings.py
+/mysite/settings.py
+map_app/templates/enchanted_circle_map.html
+map_app/static/images/heatmap_raster.tif
+map_app/static/images/heatmap_raster.png
