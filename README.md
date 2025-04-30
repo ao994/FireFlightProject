@@ -7,4 +7,4 @@ This is the repository for FireFlight, a Northern Arizona University Computer Sc
 We have built a web application that allows the predicted bird presence data that our clients have calculated to be easily displayed and exported. It is displayed as an interactive heatmap, and can be exported as a CSV file and PNG based on the selected birds.
 
 ## Installation instructions
-Installation instructions can be found on our Github Wiki, [linked here](https://github.com/ao994/FireFlight/wiki).
+Installation instructions can be found on our Github Wiki, [linked here](https://github.com/ao994/FireFlightProject/wiki).
