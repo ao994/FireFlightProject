@@ -1,15 +1,24 @@
+# Ignore the virual environment folder
 .venv
+venv/
+
+# Ignore local caching and migration files, as these are generated every time the website is run or the migrate command is run.
 **/__pycache__/**
+__pycache__/
 **/migrations/**
+
+# Ignore macOS DS_Store files
 .DS_Store?
 .DS_Store
-venv/
-__pycache__/
-bird_data.csv
-**/file_uploads/**
-**/raw_demos/**
+
+# ignore the settings file for security reasons
 settings.py
 /mysite/settings.py
+
+# Ignore all csv files, generated and used for testing.
+*.csv
+
+# Ignore generated map files, as they differ each time they are generated (Github doesn't work well with them)
 map_app/templates/enchanted_circle_map.html
 map_app/static/images/heatmap_raster.tif
 map_app/static/images/heatmap_raster.png
