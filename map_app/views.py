@@ -9,6 +9,11 @@ import subprocess, sys
 
 from .models import Species, Grid, Results
 
+#####################################################
+#         Views for page GET/POST requests          #
+#####################################################
+
+# runs when the home page is accessed
 def index(request):
     # set page to load
     index_page = "home.html"
@@ -17,14 +22,13 @@ def index(request):
     if request.method == "GET":
         return render(request, index_page)
 
-
+# runs when the /map page is accessed
 @csp_exempt  # currently not enforcing the set csp protection rules
 def map(request):
     # set page to load
     map_page = "map.html"
     # gets all the birds
     birds = Species.objects.all()
-    
 
     if request.method == "GET":
             # Check if an update was recently applied.
@@ -54,38 +58,7 @@ def map(request):
         return redirect('/map/')
 
 
-#add search method
-
-
-
-def run_django_command(command):
-    try:
-        subprocess.run(
-            [sys.executable, 'manage.py'] + command.split(),
-            check=True,
-            capture_output=True,
-            text=True
-        )
-    except subprocess.CalledProcessError as e:
-        print(f"Command '{command}' failed: {e.stderr}")
-
-
-@csp_exempt  # currently not enforcing the set csp protection rules
-def download(request):
-    
-    # get date and time for export name
-    curTime = datetime.datetime.now()
-    timeStr = curTime.strftime("%m-%d-%Y_%H_%M")
-
-    #create file download
-    response = FileResponse(open("bird_data.csv", 'rb'))
-    response['Content-Type'] = "text/csv"
-    response['Content-Disposition'] = f'attachment; filename="bird_data_{timeStr}.csv"'
-
-    # return the csv file to the browser for download
-    return response
-
-
+# runs when the /enchanted_circle_map page is accessed
 @csp_exempt  # currently not enforcing the set csp protection rules
 def enchanted_circle_map(request):
     # get the embed variable
@@ -105,6 +78,7 @@ def enchanted_circle_map(request):
     response['Expires'] = '0'
     return response
 
+# runs when the /instructions page is accessed
 @csp_exempt
 def instructions(request):
     instructions_page = "instructions.html"
@@ -112,7 +86,41 @@ def instructions(request):
     # defines what happens when there is a GET request
     if request.method == "GET":
         return render(request, instructions_page)
+
+
+#####################################################
+#               supporting functions                #
+#####################################################
+
+# runs a django command when called from a view
+def run_django_command(command):
+    try:
+        subprocess.run(
+            [sys.executable, 'manage.py'] + command.split(),
+            check=True,
+            capture_output=True,
+            text=True
+        )
+    except subprocess.CalledProcessError as e:
+        print(f"Command '{command}' failed: {e.stderr}")
+
+
+# Runs when the export button is clicked on the /map page
+@csp_exempt  # currently not enforcing the set csp protection rules
+def download(request):
     
+    # get date and time for export name
+    curTime = datetime.datetime.now()
+    timeStr = curTime.strftime("%m-%d-%Y_%H_%M")
+
+    #create file download
+    response = FileResponse(open("bird_data.csv", 'rb'))
+    response['Content-Type'] = "text/csv"
+    response['Content-Disposition'] = f'attachment; filename="bird_data_{timeStr}.csv"'
+
+    # return the csv file to the browser for download
+    return response
+
 
 #####################################################
 #             Query to csv functions                #
