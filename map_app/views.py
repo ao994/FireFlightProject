@@ -120,7 +120,7 @@ def instructions(request):
 
 # takes in list of bird species ids, creates and returns CSV file with specified results
 def getCSV(birdList):
-    # Create the csv file name 
+    # Create the csv file name
     filename = "bird_data.csv"
 
     # creates and opens new csv file
