@@ -82,6 +82,7 @@ def download(request):
     response['Content-Type'] = "text/csv"
     response['Content-Disposition'] = f'attachment; filename="bird_data_{timeStr}.csv"'
 
+    # return the csv file to the browser for download
     return response
 
 
@@ -103,69 +104,6 @@ def enchanted_circle_map(request):
     response['Pragma'] = 'no-cache'
     response['Expires'] = '0'
     return response
-
-
-@csp_exempt
-def query(request, modelName):
-    # Create the HttpResponse object with the appropriate CSV header.
-    filename = f"{modelName.lower()}_data.csv"
-    response = HttpResponse(
-        content_type="text/csv",
-        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
-    )
-
-    # make sure a valid model type is being requested
-    modelDict = {
-        "Species": Species,
-        "species": Species,
-        "Grid": Grid,
-        "grid": Grid,
-        "Results": Results,
-        "results": Results
-    }
-
-    # get the db model/table we want:
-    modelChoice = modelDict.get(modelName)
-    # otherwise, return an error
-    if modelChoice is None:
-        return HttpResponseNotFound("<h1>Error: Model Not Found!</h1>")
-    
-    # start a csv writer
-    writer = csv.writer(response)
-
-    # get the fields and write them to the csv
-    fields = [field.name for field in modelChoice._meta.fields]
-    writer.writerow(fields)
-
-    # get all elements of model from db
-    modelQuerySet = modelChoice.objects.all()
-
-    # write all elements to the csv
-    for entry in modelQuerySet:
-        # variable for holding current row
-        row = []
-
-        # for field in database row's fields
-        for field in fields:
-            # get the attribute's value
-            value = getattr(entry, field)
-
-            # find out what it is
-            fieldObj = modelChoice._meta.get_field(field)
-            
-            # if a primary key, get the key's id value
-            if fieldObj.is_relation:
-                value = getattr(value, "id", value)
-
-            # add value to the current row
-            row.append(value)
-
-        # write the current row to the csv
-        writer.writerow(row)
-
-    # return the http response, download the csv
-    return response
-
 
 @csp_exempt
 def instructions(request):
