@@ -1,5 +1,4 @@
-#Everyone
-
+# imports
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseNotFound, FileResponse
 from csp.decorators import csp_exempt

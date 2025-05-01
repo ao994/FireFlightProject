@@ -1,3 +1,4 @@
+#imports
 from django.core.management.base import BaseCommand
 from map_app.models import Species, Grid, Results
 import csv
@@ -5,7 +6,7 @@ import csv
 # define command's class
 class Command(BaseCommand):
     # main help
-    help = "Used to auto-populate the database from a file"
+    help = "Used to auto-populate the database from a correctly formatted CSV file"
 
     # add argument to command
     def add_arguments(self, parser):

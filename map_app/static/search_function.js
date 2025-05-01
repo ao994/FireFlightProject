@@ -1,4 +1,4 @@
-
+// JavaScript function that enables the live search
 function liveSearch() 
 {
     // Declare variables
@@ -27,6 +27,7 @@ function liveSearch()
     }
 }
 
+// JavaScript function that enables the select all option
 function selectAllBirds() 
 {
     // Declare variables
@@ -47,6 +48,7 @@ function selectAllBirds()
     }
 }
 
+// JavaScript function that enables the deselect all option
 function deselectAllBirds() 
 {
     // Declare variables

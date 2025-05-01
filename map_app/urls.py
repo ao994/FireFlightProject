@@ -1,7 +1,9 @@
+# imports
 from django.urls import path
 
 from . import views
 
+# place all accessible URLs and their corresponding views here
 urlpatterns = [
     path("", views.index, name="index"),
     path("map/", views.map, name="Map"),

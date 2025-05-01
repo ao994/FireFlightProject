@@ -1,5 +1,4 @@
-# Alyssa, Payton
-
+# imports
 from django.db import models
 
 # Bird Species Model
