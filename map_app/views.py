@@ -1,5 +1,4 @@
-#Everyone
-
+# imports
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseNotFound, FileResponse
 from csp.decorators import csp_exempt
@@ -9,6 +8,11 @@ import subprocess, sys
 
 from .models import Species, Grid, Results
 
+#####################################################
+#         Views for page GET/POST requests          #
+#####################################################
+
+# runs when the home page is accessed
 def index(request):
     # set page to load
     index_page = "home.html"
@@ -17,14 +21,13 @@ def index(request):
     if request.method == "GET":
         return render(request, index_page)
 
-
+# runs when the /map page is accessed
 @csp_exempt  # currently not enforcing the set csp protection rules
 def map(request):
     # set page to load
     map_page = "map.html"
     # gets all the birds
     birds = Species.objects.all()
-    
 
     if request.method == "GET":
             # Check if an update was recently applied.
@@ -54,37 +57,7 @@ def map(request):
         return redirect('/map/')
 
 
-#add search method
-
-
-
-def run_django_command(command):
-    try:
-        subprocess.run(
-            [sys.executable, 'manage.py'] + command.split(),
-            check=True,
-            capture_output=True,
-            text=True
-        )
-    except subprocess.CalledProcessError as e:
-        print(f"Command '{command}' failed: {e.stderr}")
-
-
-@csp_exempt  # currently not enforcing the set csp protection rules
-def download(request):
-    
-    # get date and time for export name
-    curTime = datetime.datetime.now()
-    timeStr = curTime.strftime("%m-%d-%Y_%H_%M")
-
-    #create file download
-    response = FileResponse(open("bird_data.csv", 'rb'))
-    response['Content-Type'] = "text/csv"
-    response['Content-Disposition'] = f'attachment; filename="bird_data_{timeStr}.csv"'
-
-    return response
-
-
+# runs when the /enchanted_circle_map page is accessed
 @csp_exempt  # currently not enforcing the set csp protection rules
 def enchanted_circle_map(request):
     # get the embed variable
@@ -104,69 +77,7 @@ def enchanted_circle_map(request):
     response['Expires'] = '0'
     return response
 
-
-@csp_exempt
-def query(request, modelName):
-    # Create the HttpResponse object with the appropriate CSV header.
-    filename = f"{modelName.lower()}_data.csv"
-    response = HttpResponse(
-        content_type="text/csv",
-        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
-    )
-
-    # make sure a valid model type is being requested
-    modelDict = {
-        "Species": Species,
-        "species": Species,
-        "Grid": Grid,
-        "grid": Grid,
-        "Results": Results,
-        "results": Results
-    }
-
-    # get the db model/table we want:
-    modelChoice = modelDict.get(modelName)
-    # otherwise, return an error
-    if modelChoice is None:
-        return HttpResponseNotFound("<h1>Error: Model Not Found!</h1>")
-    
-    # start a csv writer
-    writer = csv.writer(response)
-
-    # get the fields and write them to the csv
-    fields = [field.name for field in modelChoice._meta.fields]
-    writer.writerow(fields)
-
-    # get all elements of model from db
-    modelQuerySet = modelChoice.objects.all()
-
-    # write all elements to the csv
-    for entry in modelQuerySet:
-        # variable for holding current row
-        row = []
-
-        # for field in database row's fields
-        for field in fields:
-            # get the attribute's value
-            value = getattr(entry, field)
-
-            # find out what it is
-            fieldObj = modelChoice._meta.get_field(field)
-            
-            # if a primary key, get the key's id value
-            if fieldObj.is_relation:
-                value = getattr(value, "id", value)
-
-            # add value to the current row
-            row.append(value)
-
-        # write the current row to the csv
-        writer.writerow(row)
-
-    # return the http response, download the csv
-    return response
-
-
+# runs when the /instructions page is accessed
 @csp_exempt
 def instructions(request):
     instructions_page = "instructions.html"
@@ -174,7 +85,41 @@ def instructions(request):
     # defines what happens when there is a GET request
     if request.method == "GET":
         return render(request, instructions_page)
+
+
+#####################################################
+#               supporting functions                #
+#####################################################
+
+# runs a django command when called from a view
+def run_django_command(command):
+    try:
+        subprocess.run(
+            [sys.executable, 'manage.py'] + command.split(),
+            check=True,
+            capture_output=True,
+            text=True
+        )
+    except subprocess.CalledProcessError as e:
+        print(f"Command '{command}' failed: {e.stderr}")
+
+
+# Runs when the export button is clicked on the /map page
+@csp_exempt  # currently not enforcing the set csp protection rules
+def download(request):
     
+    # get date and time for export name
+    curTime = datetime.datetime.now()
+    timeStr = curTime.strftime("%m-%d-%Y_%H_%M")
+
+    #create file download
+    response = FileResponse(open("bird_data.csv", 'rb'))
+    response['Content-Type'] = "text/csv"
+    response['Content-Disposition'] = f'attachment; filename="bird_data_{timeStr}.csv"'
+
+    # return the csv file to the browser for download
+    return response
+
 
 #####################################################
 #             Query to csv functions                #
