@@ -72,7 +72,7 @@ class Command(BaseCommand):
                                 except:
                                     if not error:
                                         print("Error: Unable to save to database\n")
-                                        self.stderr("Error: Unable to save to database\n")
+                                        self.stderr.write("Error: Unable to save to database\n")
                                         error = True
 
                                 self.stdout.write(self.style.SUCCESS(f'Database populated successfully from {filePath}!'))
@@ -172,7 +172,7 @@ class Command(BaseCommand):
                                 except:
                                     if not error:
                                         print("Error: Unable to save to database\n")
-                                        self.stderr("Error: Unable to save to database\n")
+                                        self.stderr.write("Error: Unable to save to database\n")
                                         error = True
 
                                 self.stdout.write(self.style.SUCCESS(f'Database populated successfully from {filePath}!'))
@@ -225,7 +225,7 @@ class Command(BaseCommand):
                                 except:
                                     if not error:
                                         print("Error: Unable to save to database\n")
-                                        self.stderr("Error: Unable to save to database\n")
+                                        self.stderr.write("Error: Unable to save to database\n")
                                         error = True
 
                                 self.stdout.write(self.style.SUCCESS(f'Database populated successfully from {filePath}!'))
@@ -244,7 +244,9 @@ class Command(BaseCommand):
                         self.stderr.write("Error: Wrong file type. Must be csv\n")
 
         # else file inaccessible, return an error
-        except:
-            if not error:
-                print("Error: File inaccessible\n")
-                self.stderr.write("Error: File inaccessible\n")
+        except FileNotFoundError:
+            print("Error: File not found\n")
+            self.stderr.write("Error: File not found\n")
+        except Exception as e:
+            print(f"Enexpected error: {e}\n")
+            self.stderr.write("Enexpected error: {e}\n")
